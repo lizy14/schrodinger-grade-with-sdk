@@ -1,0 +1,108 @@
+<html>
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <script type="text/javascript">
+function main(){
+var i,j;
+var tableGrade;
+	{
+	var tables = document.getElementsByTagName("table");
+	for (i=0; i<tables.length; i++) {
+		tableGrade = tables[i];
+		if ((tableGrade.textContent.indexOf("课程名")!=-1)||
+		    (tableGrade.textContent.indexOf("Course Title")!=-1)) {
+			break;
+		}
+	}
+	if(i==tables.length){
+		alert("未在当前页面中找到成绩单表格");
+		return;
+	}
+}
+//table found, stored in tableGrade
+
+var trs = tableGrade.getElementsByTagName("tr");
+var columnID=0;
+{
+	var columnFlag = "";
+	var tdTagNames = new Array("td","th");
+	for (j=0;j<tdTagNames.length;j++){
+		if(columnFlag)break;
+		var titles = trs[0].getElementsByTagName(tdTagNames[j]);
+		for (i=0; i<titles.length; i++) {
+			if ((titles[i].textContent.indexOf('成绩' )!=-1)||
+			    (titles[i].textContent.indexOf('Grade')!=-1)) {
+				columnFlag ="th";
+				columnID   =i;
+				break;
+			}
+		}
+	}
+	if(!columnFlag){
+		alert("未在当前页面中找到'成绩'列");
+		return;
+	}
+}
+//column of grade located, index stored in columnID
+
+for(i=1;i<trs.length;i++){
+	try{
+		box=trs[i].getElementsByTagName("td")[columnID];
+		grade=box.innerHTML.replace(/^\s+|\s+$/g, "");
+		box.innerHTML = ReplaceHTML(grade,i-1);
+	}catch(err){}
+}
+
+}
+</script> 
+  <title>SDK</title> 
+ </head> 
+ <body> 
+  <table> 
+   <tbody>
+    <tr> 
+     <td>课程名</td> 
+     <td>课程属性</td> 
+     <td>学分</td> 
+     <td>成绩</td> 
+    </tr> 
+    <tr> 
+     <td> 得分为 '90' 的课程 </td> 
+     <td> 任选 </td> 
+     <td> 2 </td> 
+     <td> 90 </td> 
+    </tr> 
+    <tr> 
+     <td> 成绩为 '通过' 的课程 </td> 
+     <td> 限选 </td> 
+     <td> 2 </td> 
+     <td> 通过 </td> 
+    </tr> 
+    <tr> 
+     <td> 成绩为 '60' 的课程 </td> 
+     <td> 必修 </td> 
+     <td> 5 </td> 
+     <td> 60 </td> 
+    </tr> 
+	<tr> 
+     <td> 成绩为 '***' 的课程 </td> 
+     <td> 必修 </td> 
+     <td> 5 </td> 
+     <td> *** </td> 
+    </tr> 
+	<tr> 
+     <td> 成绩为 '' 的课程 </td> 
+     <td> 必修 </td> 
+     <td> 5 </td> 
+     <td>  </td> 
+    </tr> 
+	<tr> 
+     <td> 成绩为 '30' 的课程 </td> 
+     <td> 必修 </td> 
+     <td> 5 </td> 
+     <td> 30 </td> 
+    </tr> 
+   </tbody>
+  </table> 
+ </body>
+</html>
